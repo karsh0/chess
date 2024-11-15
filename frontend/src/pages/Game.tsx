@@ -12,7 +12,9 @@ export const GAME_OVER = "gameover";
 export const Game = () =>{
     const navigate = useNavigate()
     const socket = useSocket();
-    const [board, setBoard] = useState(new Chess())
+    console.log(new Chess())
+    const [chess, setChess] = useState(new Chess())
+    const [board, setBoard] = useState(chess.board())
 
     useEffect(()=>{
         if(!socket){
@@ -23,9 +25,14 @@ export const Game = () =>{
             console.log(message);
             switch (message.type){
                 case INIT_GAME:
+                    setChess(new Chess());
+                    setBoard(chess.board())
                     console.log("Game initialized")
                     break;
                 case MOVE:
+                    const move = message.payload;
+                    chess.move(move);
+                    setBoard(chess.board())
                     console.log("move made")
                     break;
                 case GAME_OVER:
@@ -42,10 +49,10 @@ export const Game = () =>{
         <div className="pt-8 max-w-screen-lg">
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <div>
-                    <ChessBoard/>
+                    <ChessBoard board={board}/>
                 </div>
                 <div>
-                <Button onClick={() => navigate('/game')}>Play Online</Button>
+                <Button onClick={() => navigate('/game')}>Play now</Button>
                 </div>
             </div>
         </div>
