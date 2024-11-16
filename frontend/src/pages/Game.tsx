@@ -10,7 +10,6 @@ export const GAME_OVER = "gameover";
 
 export const Game = () =>{
     const socket = useSocket();
-    console.log(new Chess())
     const [chess, setChess] = useState(new Chess())
     const [board, setBoard] = useState(chess.board())
 
